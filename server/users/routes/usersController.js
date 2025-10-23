@@ -1,0 +1,114 @@
+  console.log("[USERS CONTROLLER] POST /api/users called");
+import express from "express";
+import { createNewUser, login } from "../services/usersService.js";
+import { getUserByIdFromDb, getAllUsersFromDb, updateUserInDb, deleteUserInDb } from "../services/usersDataService.js";
+import { auth } from "../../auth/services/authService.js";
+
+const router = express.Router();
+
+// POST /api/users - הרשמה
+router.post("/", async (req, res) => {
+  try {
+    const newUser = req.body;
+    const user = await createNewUser(newUser);
+    res.status(201).send(user);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+// POST /api/users/login - התחברות
+router.post("/login", async (req, res) => {
+  try {
+    const { password, email } = req.body;
+    const token = await login(email, password);
+    res.send(token);
+  } catch (error) {
+    res.status(401).send("invalid email or password");
+  }
+});
+
+// GET /api/users/:id - שליפת משתמש לפי מזהה
+router.get("/:id", async (req, res) => {
+  try {
+    const user = await getUserByIdFromDb(req.params.id);
+    if (!user) return res.status(404).send("User not found");
+    res.send(user);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+// GET /api/users - שליפת כל המשתמשים (רק לאדמין)
+router.get("/", auth, async (req, res) => {
+  try {
+    if (!req.user.isAdmin) {
+      return res.status(403).send("Access denied - Admin only");
+    }
+    
+    const users = await getAllUsersFromDb();
+    if (users) {
+      res.send(users);
+    } else {
+      res.status(500).send("Failed to get users");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+});
+
+// PATCH /api/users/:id - עדכון הרשאות משתמש (רק לאדמין)
+router.patch("/:id", auth, async (req, res) => {
+  try {
+    if (!req.user.isAdmin) {
+      return res.status(403).send("Access denied - Admin only");
+    }
+    
+    const { id } = req.params;
+    const { isBusiness } = req.body;
+    
+    const updatedUser = await updateUserInDb(id, { isBusiness });
+    if (updatedUser) {
+      res.send(updatedUser);
+    } else {
+      res.status(404).send("User not found");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+});
+
+// DELETE /api/users/:id - מחיקת משתמש (רק לאדמין)
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    if (!req.user.isAdmin) {
+      return res.status(403).send("Access denied - Admin only");
+    }
+    
+    const { id } = req.params;
+    
+    // וידוא שלא מוחקים אדמין
+    const userToDelete = await getUserByIdFromDb(id);
+    if (!userToDelete) {
+      return res.status(404).send("User not found");
+    }
+    
+    if (userToDelete.isAdmin) {
+      return res.status(403).send("Cannot delete admin user");
+    }
+    
+    const deletedUserId = await deleteUserInDb(id);
+    if (deletedUserId) {
+      res.send("User deleted successfully");
+    } else {
+      res.status(500).send("Failed to delete user");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+});
+
+export default router;
