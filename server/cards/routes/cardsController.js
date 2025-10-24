@@ -30,7 +30,6 @@ router.get("/", async (req, res) => {
       res.status(500).send("something went wrong with get all cards");
     }
   } catch (error) {
-    console.error(error);
     res.status(500).send("Server error");
   }
 });
@@ -45,7 +44,6 @@ router.get("/:id", async (req, res) => {
       res.status(404).send("Card not found");
     }
   } catch (error) {
-    console.error(error);
     res.status(500).send("Server error");
   }
 });
@@ -63,7 +61,6 @@ router.post("/", auth, async (req, res) => {
       res.status(400).send("Failed to create card - validation error");
     }
   } catch (error) {
-    console.error("Error in POST /api/cards:", error);
     res.status(500).send("Server error");
   }
 });
@@ -93,7 +90,6 @@ router.put("/:id", auth, async (req, res) => {
       res.status(400).send("something went wrong with card edit");
     }
   } catch (error) {
-    console.error("❌ Server error in PUT /cards/:id:", error);
     res.status(500).send("Server error");
   }
 });
@@ -120,7 +116,6 @@ router.delete("/:id", auth, async (req, res) => {
       res.status(400).send("something went wrong with card delete");
     }
   } catch (error) {
-    console.error(error);
     res.status(500).send("Server error");
   }
 });

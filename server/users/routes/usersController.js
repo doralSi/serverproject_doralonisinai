@@ -1,4 +1,3 @@
-  console.log("[USERS CONTROLLER] POST /api/users called");
 import express from "express";
 import { createNewUser, login } from "../services/usersService.js";
 import { getUserByIdFromDb, getAllUsersFromDb, updateUserInDb, deleteUserInDb } from "../services/usersDataService.js";
@@ -81,7 +80,6 @@ router.get("/", auth, async (req, res) => {
       res.status(500).send("Failed to get users");
     }
   } catch (error) {
-    console.error(error);
     res.status(500).send("Server error");
   }
 });
@@ -103,7 +101,6 @@ router.patch("/:id", auth, async (req, res) => {
       res.status(404).send("User not found");
     }
   } catch (error) {
-    console.error(error);
     res.status(500).send("Server error");
   }
 });
@@ -134,7 +131,6 @@ router.delete("/:id", auth, async (req, res) => {
       res.status(500).send("Failed to delete user");
     }
   } catch (error) {
-    console.error(error);
     res.status(500).send("Server error");
   }
 });

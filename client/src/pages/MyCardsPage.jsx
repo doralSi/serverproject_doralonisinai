@@ -13,13 +13,7 @@ function MyCardsPage() {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        console.log("user in MyCardsPage:", user);
-        console.log("token in MyCardsPage:", token);
         const response = await getAllCards(token);
-        console.log("cards from server:", response.data);
-        if (response.data.length > 0) {
-          console.log("first card object:", response.data[0]);
-        }
         const filtered = response.data.filter(
           (card) => String(card.user_id) === String(user?._id)
         );
@@ -34,7 +28,6 @@ function MyCardsPage() {
         setMyCards(sorted);
         setSnack("success", "Your cards loaded successfully");
       } catch (err) {
-        console.error("Error loading cards:", err);
         setSnack("error", "Failed to load your cards");
       }
     };
@@ -48,7 +41,6 @@ function MyCardsPage() {
       setMyCards((prev) => prev.filter((card) => card._id !== cardId));
       setSnack("success", "Card deleted successfully");
     } catch (err) {
-      console.error(err);
       setSnack("error", "Failed to delete card");
     }
   };

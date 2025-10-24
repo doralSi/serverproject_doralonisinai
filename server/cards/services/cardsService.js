@@ -29,15 +29,12 @@ export const createNewCard = async (card, userId) => {
     
     const { error } = validateCard(card);
     if (error) {
-      console.log("Validation error:", error.details[0].message);
       return null;
     }
     
     const newCard = await createCard(card);
-    console.log("Card created successfully:", newCard._id);
     return newCard;
   } catch (error) {
-    console.error("Error in createNewCard:", error);
     return null;
   }
 };
