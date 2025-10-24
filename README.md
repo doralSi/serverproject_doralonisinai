@@ -1,9 +1,9 @@
-# 🎴 Business Cards Application - BCards
+# Business Cards Application - BCards
 
-## 📋 תיאור הפרויקט
+## תיאור הפרויקט
 אפליקציית Business Cards מתקדמת המאפשרת ליצור, לנהל ולשתף כרטיסי ביקור דיגיטליים. הפרויקט כולל שרת Node.js עם Express ומסד נתונים MongoDB, יחד עם ממשק משתמש React מודרני.
 
-## 🏗️ מבנה הפרויקט
+## מבנה הפרויקט
 ```
 final_server_project/
 ├── server/                 # Backend - Node.js + Express
@@ -25,7 +25,7 @@ final_server_project/
     └── package.json
 ```
 
-## 🚀 טכנולוגיות
+## טכנולוגיות
 
 ### Backend
 - **Node.js** v20+ - פלטפורמת הרצה
@@ -44,7 +44,7 @@ final_server_project/
 - **Material-UI** - קומפוננטות עיצוב
 - **Axios** - בקשות HTTP
 
-## ⚙️ התקנה והרצה
+## התקנה והרצה
 
 ### דרישות מקדימות
 - Node.js v20 ומעלה
@@ -102,61 +102,61 @@ npm run dev
 ```
 הקליינט ירוץ על: http://localhost:5173
 
-## 📚 API Endpoints
+## API Endpoints
 
-### 👤 Users (משתמשים)
-
-| Method | Endpoint | תיאור | אימות |
-|--------|----------|-------|-------|
-| POST | `/api/users` | הרשמת משתמש חדש | ❌ |
-| POST | `/api/users/login` | התחברות | ❌ |
-| GET | `/api/users/:id` | שליפת פרטי משתמש | ❌ |
-| GET | `/api/users` | שליפת כל המשתמשים | ✅ Admin |
-| PUT | `/api/users/:id` | עדכון פרטי משתמש | ✅ User/Admin |
-| PATCH | `/api/users/:id` | שינוי הרשאות isBusiness | ✅ Admin |
-| DELETE | `/api/users/:id` | מחיקת משתמש | ✅ Admin |
-
-### 🎴 Cards (כרטיסי ביקור)
+### Users (משתמשים)
 
 | Method | Endpoint | תיאור | אימות |
 |--------|----------|-------|-------|
-| GET | `/api/cards` | שליפת כל הכרטיסים | ❌ |
-| GET | `/api/cards/my-cards` | הכרטיסים שלי | ✅ Business |
-| GET | `/api/cards/:id` | שליפת כרטיס לפי ID | ❌ |
-| POST | `/api/cards` | יצירת כרטיס חדש | ✅ Business |
-| PUT | `/api/cards/:id` | עדכון כרטיס | ✅ Owner |
-| PATCH | `/api/cards/:id` | לייק/ביטול לייק | ✅ User |
-| DELETE | `/api/cards/:id` | מחיקת כרטיס | ✅ Owner/Admin |
+| POST | `/api/users` | הרשמת משתמש חדש | לא |
+| POST | `/api/users/login` | התחברות | לא |
+| GET | `/api/users/:id` | שליפת פרטי משתמש | לא |
+| GET | `/api/users` | שליפת כל המשתמשים | Admin |
+| PUT | `/api/users/:id` | עדכון פרטי משתמש | User/Admin |
+| PATCH | `/api/users/:id` | שינוי הרשאות isBusiness | Admin |
+| DELETE | `/api/users/:id` | מחיקת משתמש | Admin |
 
-### 🔐 Headers לאימות
+### Cards (כרטיסי ביקור)
+
+| Method | Endpoint | תיאור | אימות |
+|--------|----------|-------|-------|
+| GET | `/api/cards` | שליפת כל הכרטיסים | לא |
+| GET | `/api/cards/my-cards` | הכרטיסים שלי | Business |
+| GET | `/api/cards/:id` | שליפת כרטיס לפי ID | לא |
+| POST | `/api/cards` | יצירת כרטיס חדש | Business |
+| PUT | `/api/cards/:id` | עדכון כרטיס | Owner |
+| PATCH | `/api/cards/:id` | לייק/ביטול לייק | User |
+| DELETE | `/api/cards/:id` | מחיקת כרטיס | Owner/Admin |
+
+### Headers לאימות
 ```json
 {
   "x-auth-token": "your_jwt_token_here"
 }
 ```
 
-## 👥 סוגי משתמשים
+## סוגי משתמשים
 
-### 🔵 משתמש רגיל (Regular User)
+### משתמש רגיל (Regular User)
 - צפייה בכרטיסים
 - לייק לכרטיסים
 - עדכון הפרופיל שלו
 
-### 🟢 משתמש עסקי (Business User)
+### משתמש עסקי (Business User)
 - כל ההרשאות של משתמש רגיל
 - יצירת כרטיסי ביקור
 - עריכה ומחיקה של הכרטיסים שלו
 
-### 🔴 מנהל מערכת (Admin)
+### מנהל מערכת (Admin)
 - כל ההרשאות של משתמש עסקי
 - צפייה בכל המשתמשים
 - מחיקת משתמשים (למעט אדמינים אחרים)
 - שינוי הרשאות משתמשים
 - שינוי bizNumber של כרטיסים
 
-## 🎁 Bonus Features (בונוסים)
+## Bonus Features (בונוסים)
 
-### ✅ 1. שינוי bizNumber על ידי אדמין
+### 1. שינוי bizNumber על ידי אדמין
 אדמין יכול לשנות את מספר העסק (bizNumber) בעת עריכת כרטיס, בתנאי שהמספר החדש לא תפוס.
 
 **Endpoint:** `PUT /api/cards/:id`
@@ -166,21 +166,21 @@ npm run dev
 }
 ```
 
-### ✅ 2. File Logger
+### 2. File Logger
 כל שגיאה עם סטטוס 400 ומעלה נרשמת אוטומטית לקובץ לוג.
 
 - **תיקייה:** `server/logs/`
 - **פורמט שם קובץ:** `YYYY-MM-DD.log`
 - **תוכן:** `[תאריך/שעה] Status: 400 Error: הודעת שגיאה`
 
-### ✅ 3. חסימת משתמש אחרי 3 ניסיונות כושלים
+### 3. חסימת משתמש אחרי 3 ניסיונות כושלים
 משתמש שמנסה להתחבר 3 פעמים עם סיסמה שגויה באותו מייל - נחסם ל-24 שעות.
 
 **שדות במודל User:**
 - `failedLoginAttempts` - מונה ניסיונות
 - `blockExpires` - תאריך סיום החסימה
 
-## 📊 מבני נתונים
+## מבני נתונים
 
 ### User Schema
 ```javascript
@@ -241,7 +241,7 @@ npm run dev
 }
 ```
 
-## 🎨 פונקציונאליות הקליינט
+## פונקציונאליות הקליינט
 
 ### דפי האפליקציה
 - **דף הבית** - הצגת כרטיסים אקראיים
@@ -256,14 +256,14 @@ npm run dev
 - **פרופיל משתמש** - צפייה ועריכת פרופיל
 
 ### פיצ'רים
-- 🌓 מצב כהה/בהיר (Dark/Light Mode)
-- 🔍 חיפוש כרטיסים
-- ❤️ לייק לכרטיסים
-- 📱 Responsive Design
-- 🔔 התראות (Snackbar)
-- 🔐 ניהול אימות (JWT)
+- מצב כהה/בהיר (Dark/Light Mode)
+- חיפוש כרטיסים
+- לייק לכרטיסים
+- Responsive Design
+- התראות (Snackbar)
+- ניהול אימות (JWT)
 
-## 🛡️ אבטחה
+## אבטחה
 
 - **הצפנת סיסמאות** - bcryptjs עם salt
 - **JWT Tokens** - תוקף של 24 שעות
@@ -271,19 +271,19 @@ npm run dev
 - **Authorization** - בדיקת הרשאות בכל endpoint
 - **חסימת משתמשים** - אחרי 3 ניסיונות כושלים
 
-## 📝 דרישות הפרויקט
+## דרישות הפרויקט
 
 הפרויקט עומד בכל הדרישות:
-- ✅ כל ה-REST API endpoints
-- ✅ אימות JWT
-- ✅ 3 סוגי משתמשים (Regular, Business, Admin)
-- ✅ CRUD מלא לכרטיסים ומשתמשים
-- ✅ MongoDB + Mongoose
-- ✅ ולידציה מלאה
-- ✅ React Client מתקדם
-- ✅ 3 בונוסים מלאים
+- כל ה-REST API endpoints
+- אימות JWT
+- 3 סוגי משתמשים (Regular, Business, Admin)
+- CRUD מלא לכרטיסים ומשתמשים
+- MongoDB + Mongoose
+- ולידציה מלאה
+- React Client מתקדם
+- 3 בונוסים מלאים
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### השרת לא עולה
 ```bash
@@ -306,11 +306,11 @@ export const API_BASE = "http://localhost:3000/api";
 headers: { "x-auth-token": token }
 ```
 
-## 👨‍💻 מפתח
+## מפתח
 **דור אלוני סיני**
 - GitHub: https://github.com/doralSi/serverproject_doralonisinai
 
-## 📄 רישיון
+## רישיון
 פרויקט זה פותח כחלק מקורס Full Stack ב-HackerU
 
 ---
