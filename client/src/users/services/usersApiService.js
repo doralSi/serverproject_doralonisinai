@@ -11,6 +11,16 @@ export const getAllUsers = (token) =>
   });
 
 /**
+ * Update user profile (name, phone, image, address)
+ */
+export const updateUserProfile = (userId, userData, token) =>
+  axios.put(
+    `${API_BASE}/${userId}`,
+    userData,
+    { headers: { "x-auth-token": token } }
+  );
+
+/**
  * Update user role (business <-> regular)
  * Accepts userId and boolean isBusiness
  */

@@ -4,10 +4,13 @@ import { useCurrentUser } from "../users/providers/UserProvider";
 import { useNavigate } from "react-router-dom";
 import { Grid, TextField, Typography, Box } from "@mui/material";
 import Form from "../components/Form";
+import { updateUserProfile } from "../users/services/usersApiService";
+import { useSnack } from "../providers/SnackbarProvider";
 
 const EditUserProfilePage = () => {
-  const { userFullDetails: user, setUserFullDetails } = useCurrentUser();
+  const { userFullDetails: user, setUserFullDetails, token } = useCurrentUser();
   const navigate = useNavigate();
+  const setSnack = useSnack();
   if (!user) return <div style={{textAlign: "center", marginTop: 80}}>User not found</div>;
 
   // initial form state from user
@@ -30,37 +33,40 @@ const EditUserProfilePage = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Update user object structure
-    const updatedUser = {
-      ...user,
-      name: {
-        ...user.name,
-        first: form.firstName,
-        middle: form.middleName,
-        last: form.lastName,
-      },
-      phone: form.phone,
-      image: {
-        url: form.imageUrl,
-        alt: form.imageAlt,
-      },
-      state: form.state,
-      country: form.country,
-      city: form.city,
-      address: {
-        ...user.address,
-        street: form.street,
-        houseNumber: form.houseNumber,
-        zip: form.zip,
-        city: form.city,
-        country: form.country,
-        state: form.state,
-      },
-    };
-    setUserFullDetails(updatedUser);
-    navigate("/user-profile");
+    try {
+      // Update user object structure
+      const updatedUser = {
+        name: {
+          first: form.firstName,
+          middle: form.middleName,
+          last: form.lastName,
+        },
+        phone: form.phone,
+        image: {
+          url: form.imageUrl,
+          alt: form.imageAlt,
+        },
+        address: {
+          street: form.street,
+          houseNumber: form.houseNumber,
+          zip: form.zip,
+          city: form.city,
+          country: form.country,
+          state: form.state,
+        },
+      };
+      
+      // Save to server
+      const response = await updateUserProfile(user._id, updatedUser, token);
+      setUserFullDetails(response.data);
+      setSnack("success", "Profile updated successfully");
+      navigate("/user-profile");
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      setSnack("error", "Failed to update profile");
+    }
   };
 
   return (

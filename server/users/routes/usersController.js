@@ -39,6 +39,34 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// PUT /api/users/:id - עדכון פרטי משתמש (רק המשתמש עצמו)
+router.put("/:id", auth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userData = req.body;
+    
+    // וידוא שהמשתמש מעדכן את עצמו בלבד (אלא אם הוא אדמין)
+    if (req.user._id !== id && !req.user.isAdmin) {
+      return res.status(403).send("Access denied - You can only edit your own profile");
+    }
+    
+    // מניעת שינוי שדות רגישים
+    delete userData.password;
+    delete userData.isAdmin;
+    delete userData.isBusiness;
+    delete userData._id;
+    
+    const updatedUser = await updateUserInDb(id, userData);
+    if (updatedUser) {
+      res.send(updatedUser);
+    } else {
+      res.status(404).send("User not found");
+    }
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+});
+
 // GET /api/users - שליפת כל המשתמשים (רק לאדמין)
 router.get("/", auth, async (req, res) => {
   try {
